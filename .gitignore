@@ -433,3 +433,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# macOS
+.DS_Store
+
+# Xcode user-specific files
+**/xcuserdata/
+*.xcuserstate
+
+# Claude Code worktree scratch space
+.claude/worktrees/
+
