@@ -102,14 +102,12 @@ actor Client {
 
     private func pickEndpoint(payload: PairingPayload) async throws -> NWEndpoint {
         if let hint = payload.hostHint, !hint.isEmpty {
-            return NWEndpoint.hostPort(
-                host: NWEndpoint.Host(hint),
-                port: NWEndpoint.Port(rawValue: payload.port)!
-            )
+            guard let url = URL(string: "ws://\(hint):\(payload.port)/") else {
+                throw ClientError.handshakeFailed("invalid host hint URL")
+            }
+            return NWEndpoint.url(url)
         }
-        let browser = PeerBrowser()
-        defer { browser.cancel() }
-        return try await browser.resolve(deviceUUID: payload.deviceUUID, timeout: 3.0)
+        throw ClientError.handshakeFailed("Pairing missing host hint; rescan QR")
     }
 
     private func openConnection(to endpoint: NWEndpoint) async throws -> NWConnection {
@@ -185,6 +183,10 @@ actor Client {
                     return
                 }
                 resumer.resume(.success(data))
+            }
+            Task {
+                try? await Task.sleep(nanoseconds: 5_000_000_000)
+                resumer.resume(.failure(ClientError.handshakeFailed("timeout waiting for Mac reply")))
             }
         }
 

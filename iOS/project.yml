@@ -42,6 +42,7 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSMicrophoneUsageDescription: "Universal Voice records audio on this iPhone to transcribe locally. Audio never leaves your device."
+        NSSpeechRecognitionUsageDescription: "Universal Voice transcribes your speech on-device using Apple's Speech framework. Audio is processed locally."
         NSLocalNetworkUsageDescription: "Universal Voice connects to your paired Mac on the local network to deliver transcribed text."
         NSCameraUsageDescription: "Universal Voice uses the camera to scan a pairing QR code shown by your Mac."
         NSBonjourServices:

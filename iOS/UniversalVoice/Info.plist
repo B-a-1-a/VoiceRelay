@@ -33,6 +33,8 @@
 	<string>Universal Voice connects to your paired Mac on the local network to deliver transcribed text.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Universal Voice records audio on this iPhone to transcribe locally. Audio never leaves your device.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Universal Voice transcribes your speech on-device using Apple's Speech framework. Audio is processed locally.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
