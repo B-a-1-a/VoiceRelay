@@ -1,0 +1,62 @@
+name: UniversalVoiceHelper
+options:
+  bundleIdPrefix: dev.balashukla.voicerelay
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+    SWIFT_UPCOMING_FEATURE_REGION_BASED_ISOLATION: NO
+
+packages:
+  UniversalVoiceProtocol:
+    path: ../Packages/UniversalVoiceProtocol
+
+targets:
+  UniversalVoiceHelper:
+    type: application
+    platform: macOS
+    sources:
+      - path: UniversalVoiceHelper
+        excludes:
+          - "**/*.entitlements"
+          - "Info.plist"
+    resources:
+      - path: UniversalVoiceHelper/Resources/Assets.xcassets
+    info:
+      path: UniversalVoiceHelper/Info.plist
+      properties:
+        LSUIElement: true
+        LSMinimumSystemVersion: "26.0"
+        CFBundleName: "Universal Voice Helper"
+        CFBundleDisplayName: "Universal Voice Helper"
+        NSLocalNetworkUsageDescription: "Universal Voice Helper advertises itself on the local network so your paired iPhone can deliver dictated text."
+        NSBonjourServices:
+          - "_universalvoice._tcp"
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    entitlements:
+      path: UniversalVoiceHelper/UniversalVoiceHelper.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.network.server: true
+        com.apple.security.network.client: true
+    dependencies:
+      - package: UniversalVoiceProtocol
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.balashukla.voicerelay.UniversalVoiceHelper
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+        MACOSX_DEPLOYMENT_TARGET: "26.0"
