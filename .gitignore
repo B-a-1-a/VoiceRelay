@@ -230,6 +230,12 @@ PublishScripts/
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
+# Track our Swift Package Manager packages at the repo root, but keep
+# SwiftPM build outputs (`.build/`) ignored.
+!/Packages/
+!/Packages/**
+/Packages/**/.build/
+/Packages/**/.swiftpm/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/[Pp]ackages/repositories.config
 # NuGet v3's project.json files produces more ignorable files

@@ -1,0 +1,103 @@
+name: UniversalVoice
+options:
+  bundleIdPrefix: dev.balashukla.voicerelay
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+    SWIFT_UPCOMING_FEATURE_REGION_BASED_ISOLATION: NO
+
+packages:
+  UniversalVoiceProtocol:
+    path: ../Packages/UniversalVoiceProtocol
+
+targets:
+  UniversalVoice:
+    type: application
+    platform: iOS
+    sources:
+      - path: UniversalVoice
+        excludes:
+          - "**/*.entitlements"
+          - "Info.plist"
+      - path: Shared
+    resources:
+      - path: UniversalVoice/Resources/Assets.xcassets
+    info:
+      path: UniversalVoice/Info.plist
+      properties:
+        UILaunchScreen:
+          UIColorName: AccentColor
+        UIBackgroundModes:
+          - audio
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSMicrophoneUsageDescription: "Universal Voice records audio on this iPhone to transcribe locally. Audio never leaves your device."
+        NSLocalNetworkUsageDescription: "Universal Voice connects to your paired Mac on the local network to deliver transcribed text."
+        NSCameraUsageDescription: "Universal Voice uses the camera to scan a pairing QR code shown by your Mac."
+        NSBonjourServices:
+          - "_universalvoice._tcp"
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        NSSupportsLiveActivities: true
+        NSSupportsLiveActivitiesFrequentUpdates: true
+    entitlements:
+      path: UniversalVoice/UniversalVoice.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.device.audio-input: true
+        com.apple.security.device.camera: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+        com.apple.security.application-groups:
+          - group.dev.balashukla.voicerelay
+    dependencies:
+      - package: UniversalVoiceProtocol
+      - target: UniversalVoiceLiveActivity
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.balashukla.voicerelay.UniversalVoice
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_EMIT_LOC_STRINGS: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+
+  UniversalVoiceLiveActivity:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: UniversalVoiceLiveActivity
+        excludes:
+          - "**/*.entitlements"
+          - "Info.plist"
+      - path: Shared
+    info:
+      path: UniversalVoiceLiveActivity/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: UniversalVoiceLiveActivity/UniversalVoiceLiveActivity.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.dev.balashukla.voicerelay
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.balashukla.voicerelay.UniversalVoice.LiveActivity
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: NO
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
