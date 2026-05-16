@@ -77,8 +77,8 @@
 		C2516B41793CD8BE2D68B494 /* Transcriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcriber.swift; sourceTree = "<group>"; };
 		D7405BF08D6457C0556A022E /* Cleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cleanup.swift; sourceTree = "<group>"; };
 		E3B980D2B95DDBF2698652E0 /* DictationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationCoordinator.swift; sourceTree = "<group>"; };
-		EEE03B81EE64ADA92F0B02D1 /* UniversalVoice.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = UniversalVoice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4D63A7C68C4C3E1FEE1DC0E /* UniversalVoiceLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = UniversalVoiceLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEE03B81EE64ADA92F0B02D1 /* UniversalVoice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalVoice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4D63A7C68C4C3E1FEE1DC0E /* UniversalVoiceLiveActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UniversalVoiceLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,11 +277,9 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					04CEF0EC56382449691BCB69 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					EFF79EE803B38CD1AE7FAD38 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -442,6 +440,7 @@
 				CODE_SIGN_ENTITLEMENTS = UniversalVoice/UniversalVoice.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXJG75H7XR;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UniversalVoice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -461,6 +460,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = UniversalVoiceLiveActivity/UniversalVoiceLiveActivity.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXJG75H7XR;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UniversalVoiceLiveActivity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -484,6 +484,7 @@
 				CODE_SIGN_ENTITLEMENTS = UniversalVoice/UniversalVoice.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXJG75H7XR;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UniversalVoice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -564,6 +565,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = UniversalVoiceLiveActivity/UniversalVoiceLiveActivity.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXJG75H7XR;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UniversalVoiceLiveActivity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
