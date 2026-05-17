@@ -88,9 +88,7 @@ actor Transcriber {
                         text: text,
                         isVolatile: volatile
                     ))
-                    if !volatile {
-                        await self?.resetSilenceTimer(onSilence: onSilence)
-                    }
+                    await self?.resetSilenceTimer(onSilence: onSilence)
                 }
             } catch {
                 _ = error
@@ -126,7 +124,7 @@ actor Transcriber {
     private func resetSilenceTimer(onSilence: @escaping @Sendable () -> Void) {
         silenceTask?.cancel()
         silenceTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            try? await Task.sleep(nanoseconds: 2_800_000_000)
             guard !Task.isCancelled, self != nil else { return }
             onSilence()
         }

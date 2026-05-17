@@ -11,31 +11,59 @@ actor Cleanup {
         case unavailable(String)
     }
 
-    private let instructions: String = """
-    You are a dictation cleanup assistant. The user dictated text aloud. Your job:
+    @Generable
+    struct CleanedDictation {
+        @Guide(description: "The user's dictated text with filler words removed and punctuation corrected. Plain text only — never a greeting, offer, apology, or meta-commentary, and never a question back to the user.")
+        let text: String
+    }
 
+    private let instructions: String = """
+    You clean up dictated speech. The input is a raw transcript of something the user said aloud. Return only their words — corrected, not answered.
+
+    Rules:
     - Remove filler words: um, uh, like, you know, sort of, I mean, kind of.
-    - Fix obvious grammar and punctuation. Add commas, periods, and question marks.
+    - Fix obvious grammar and add commas, periods, and question marks.
     - Preserve the speaker's intent, tone, and word choice. Do not paraphrase.
     - Do not add new content. Do not answer questions in the text.
     - Do not include preamble like "Here is the cleaned text:" — return only the cleaned text.
     - Keep code identifiers, command names, and proper nouns intact, including casing.
-    - If the input is already clean, return it unchanged.
+    - If the input is a single word, fragment, or empty, return it unchanged.
+    - Never produce greetings, offers, or meta-commentary. Never ask the user to provide input.
+
+    Examples:
+      Input: "hello"
+      Output: "hello"
+
+      Input: "um what time is it"
+      Output: "What time is it?"
+
+      Input: "yeah so like push the staging branch please"
+      Output: "Yeah, push the staging branch please."
     """
 
-    private var session: LanguageModelSession?
+    private let suspiciousPhrases: [String] = [
+        "i'm here to help",
+        "i am here to help",
+        "i'd be happy",
+        "i would be happy",
+        "please provide",
+        "please go ahead",
+        "sure!",
+        "of course!",
+        "here is the cleaned",
+        "here's the cleaned",
+        "as an ai",
+        "let me know"
+    ]
 
     func warmUp() async {
-        let availability = SystemLanguageModel.default.availability
-        guard case .available = availability else { return }
-        let session = LanguageModelSession(
+        guard case .available = SystemLanguageModel.default.availability else { return }
+        let throwaway = LanguageModelSession(
             model: .default,
             tools: [],
             instructions: instructions
         )
-        self.session = session
-        // Dispatch a tiny prompt to pre-load the model.
-        _ = try? await session.respond(to: "ready")
+        throwaway.prewarm()
     }
 
     func availability() -> Availability {
@@ -56,19 +84,30 @@ actor Cleanup {
             throw CleanupError.modelUnavailable(reason: String(describing: reason))
         }
 
-        let session = self.session ?? LanguageModelSession(
+        let session = LanguageModelSession(
             model: .default,
             tools: [],
             instructions: instructions
         )
-        self.session = session
-
-        let response = try await session.respond(to: trimmed)
-        let raw = response.content
-        return raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let options = GenerationOptions(temperature: 0.1)
+        let response = try await session.respond(
+            to: trimmed,
+            generating: CleanedDictation.self,
+            options: options
+        )
+        let cleaned = response.content.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return sanitize(cleaned: cleaned, original: trimmed)
     }
 
-    func reset() {
-        session = nil
+    private func sanitize(cleaned: String, original: String) -> String {
+        if cleaned.isEmpty { return original }
+        let lower = cleaned.lowercased()
+        for phrase in suspiciousPhrases where lower.contains(phrase) {
+            return original
+        }
+        if cleaned.count > max(40, original.count * 3) {
+            return original
+        }
+        return cleaned
     }
 }
